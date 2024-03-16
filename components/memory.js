@@ -1,7 +1,5 @@
 // deps
 import fs from "fs";
-import path from "path";
-import { cwd } from "process";
 import config from "../config.json" assert { type: "json" };
 import { VectorStoreRetrieverMemory } from "langchain/memory";
 import { LlamaCppEmbeddings } from "@langchain/community/embeddings/llama_cpp";
@@ -20,18 +18,21 @@ function testDir(dir) {
 
 // class
 export default class Memory {
+    // constructoor
+    constructor(llmPath) {
+        this.llmPath = llmPath;
+    }
+
     // initialization function
     async init() {
         // set the memory dir
         this.memoryDir = path.join(process.cwd(), "memory");
-        // set the llm path
-        let llmPath = path.join(process.cwd(), "models", config.llm);
         // if the memory dir has been initialized
-        if (testDir(this.memoryDir)) this.vectorStore = await CloseVectorNode.load(this.memoryDir, new LlamaCppEmbeddings({ modelPath: llmPath }), { space: "cosine" });
+        if (testDir(this.memoryDir)) this.vectorStore = await CloseVectorNode.load(this.memoryDir, new LlamaCppEmbeddings({ modelPath: this.llmPath }), { space: "cosine" });
         // otherwise
         else {
             fs.mkdirSync(this.memoryDir);
-            this.vectorStore = new CloseVectorNode(new LlamaCppEmbeddings({ modelPath: llmPath }), { space: "cosine" });
+            this.vectorStore = new CloseVectorNode(new LlamaCppEmbeddings({ modelPath: this.llmPath }), { space: "cosine" });
         }
         // make a memory object
         this.memory = new VectorStoreRetrieverMemory({

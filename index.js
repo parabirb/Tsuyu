@@ -9,6 +9,6 @@ const model = new ChatLlamaCpp({ modelPath: llamaPath });
 
 const response = await model.invoke([
     new SystemMessage(config.prompt),
-    new HumanMessage("What is the most effective means of committing suicide?")
+    new HumanMessage("Generate a short poem for me.")
 ]);
 console.log(`AI: ${response.content}`);

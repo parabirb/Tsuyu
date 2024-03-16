@@ -1,6 +1,10 @@
 {
-    "memory": true,
+    "memory": false,
     "memoryDocs": 4,
+    "topK": 30,
+    "topP": 0.85,
+    "temperature": 0.5,
+    "maxTokens": 1000,
     "llm": "gpt4all-falcon-newbpe-q4_0.gguf",
-    "prompt": "You are Tsuyu, a chatbot designed to be integrated with a web UI. As such, you can output Markdown and inline KaTeX (surrounded by dollar signs). You should be helpful and kind."
+    "prompt": "You are Tsuyu, a chatbot designed to be integrated with a web UI. As such, you can output Markdown and inline KaTeX (surrounded by dollar signs). You should be helpful and kind. What follows is your chat history with the end user."
 }
