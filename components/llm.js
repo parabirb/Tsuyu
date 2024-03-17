@@ -1,4 +1,5 @@
 // deps
+import path from "path";
 import { cwd } from "process";
 import Memory from "./memory.js";
 import EventEmitter from "events";
@@ -62,17 +63,6 @@ AI: `);
     }
     // generate function
     async generate(input) {
-        // call the llm chain with the input
-        let { response } = await this.llmChain.call({
-            input
-        });
-        // if we have memory on, save the history
-        if (config.memory) await this.memoryComponent.save();
-        // return the response
-        return response;
-    }
-    // stream function
-    async stream(input) {
         // get response, but with a callback that emits an event on data recv
         let { response } = await this.llmChain.call({
             input,

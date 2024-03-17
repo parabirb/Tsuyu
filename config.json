@@ -1,5 +1,6 @@
 {
-    "memory": true,
+    "port": 8080,
+    "memory": false,
     "memoryDocs": 4,
     "topK": 30,
     "topP": 0.85,

@@ -1,5 +1,6 @@
 // deps
 import fs from "fs";
+import path from "path";
 import Embeddings from "./embeddings.js";
 import config from "../config.json" assert { type: "json" };
 import { VectorStoreRetrieverMemory } from "langchain/memory";
