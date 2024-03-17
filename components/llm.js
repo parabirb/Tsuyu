@@ -6,6 +6,7 @@ import EventEmitter from "events";
 import { BufferMemory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import config from "../config.json" assert { type: "json" };
+import { BaseCallbackHandler } from "@langchain/core/callbacks/base";
 import { ChatLlamaCpp } from "@langchain/community/chat_models/llama_cpp";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 
@@ -33,7 +34,7 @@ export default class LLM {
             this.memory = new BufferMemory({ returnMessages: true, memoryKey: "history" });
         }
         // create the model
-        this.model = new ChatLlamaCpp({ modelPath: this.llmPath, topK: config.topK, topP: config.topP, temperature: config.temperature, maxTokens: config.maxTokens });
+        this.model = new ChatLlamaCpp({ modelPath: this.llmPath, topK: config.topK, topP: config.topP, temperature: config.temperature, maxTokens: config.maxTokens, verbose: true });
         // make a prompt
         if (!config.memory) this.prompt = ChatPromptTemplate.fromMessages([
             [
@@ -58,21 +59,22 @@ AI: `);
         this.llmChain = new ConversationChain({
             memory: this.memory,
             prompt: this.prompt,
-            llm: this.model
+            llm: this.model,
+            verbose: true
         });
     }
     // generate function
     async generate(input) {
         // get response, but with a callback that emits an event on data recv
-        let { response } = await this.llmChain.call({
-            input,
-            callbacks: [
-                {
-                    handleLLMNewToken: (data) => {
-                        this.emitter.emit("chunk", data);
-                    }
+        let { response } = await this.llmChain.invoke({
+            input
+        }, {
+            callbacks: [BaseCallbackHandler.fromMethods({
+                handleLLMNewToken: (token) => {
+                    console.log(token);
+                    this.emitter.emit("chunk", token);
                 }
-            ]
+            })]
         });
         // if there's a memory store, save history
         if (config.memory) await this.memoryComponent.save();
