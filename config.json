@@ -6,5 +6,6 @@
     "temperature": 0.5,
     "maxTokens": 1000,
     "llm": "gpt4all-falcon-newbpe-q4_0.gguf",
+    "stt": "Xenova/whisper-small",
     "prompt": "You are Tsuyu, a chatbot designed to be integrated with a web UI. As such, you can output Markdown and inline KaTeX (surrounded by dollar signs). You should be helpful and kind."
 }

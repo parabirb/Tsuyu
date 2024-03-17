@@ -3,3 +3,5 @@ models
 web
 config.json
 memory
+input.wav
+ame_output.wav

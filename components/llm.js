@@ -1,6 +1,7 @@
 // deps
 import { cwd } from "process";
 import Memory from "./memory.js";
+import EventEmitter from "events";
 import { BufferMemory } from "langchain/memory";
 import { ConversationChain } from "langchain/chains";
 import config from "../config.json" assert { type: "json" };
@@ -9,6 +10,10 @@ import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts
 
 // export class
 export default class LLM {
+    // constructor
+    constructor() {
+        this.emitter = new EventEmitter();
+    }
     // init function
     async init() {
         // set the llm path
@@ -64,6 +69,24 @@ AI: `);
         // if we have memory on, save the history
         if (config.memory) await this.memoryComponent.save();
         // return the response
+        return response;
+    }
+    // stream function
+    async stream(input) {
+        // get response, but with a callback that emits an event on data recv
+        let { response } = await this.llmChain.call({
+            input,
+            callbacks: [
+                {
+                    handleLLMNewToken: (data) => {
+                        this.emitter.emit("chunk", data);
+                    }
+                }
+            ]
+        });
+        // if there's a memory store, save history
+        if (config.memory) await this.memoryComponent.save();
+        // return the reseponse
         return response;
     }
 }
