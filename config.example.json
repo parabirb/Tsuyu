@@ -1,13 +1,17 @@
 {
     "port": 8080,
     "memory": true,
-    "memoryDocs": 4,
+    "memoryDocs": 1,
+    "useSummarizer": false,
+    "historyPieces": 3,
     "llamaConfig": {
         "topK": 30,
         "topP": 0.85,
         "gpuLayers": 5,
         "temperature": 0.5,
-        "maxTokens": 1000
+        "batchSize": 512,
+        "maxTokens": 1024,
+        "verbose": true
     },
     "llm": "gpt4all-falcon-newbpe-q4_0.gguf",
     "stt": "Xenova/whisper-small",

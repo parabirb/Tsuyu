@@ -23,81 +23,62 @@ export default class LLM {
     async init() {
         // set the llm path
         this.llmPath = path.join(cwd(), "models", config.llm);
-        // if saveable memory is enabled
-        if (config.memory) {
-            // init the memory component
-            this.memoryComponent = new Memory();
-            await this.memoryComponent.init();
-            // set our memory to feed to the llm chain
-            this.memory = this.memoryComponent.memory;
-        }
-        // otherwise
-        else {
-            // make a buffer memory
-            this.memory = new BufferMemory({
-                returnMessages: true,
-                memoryKey: "history",
-                inputKey: "input"
-            });
-        }
         // create the model
         this.model = new ChatLlamaCpp({
             modelPath: this.llmPath,
             ...config.llamaConfig,
-            callbacks: [BaseCallbackHandler.fromMethods({
-                handleLLMNewToken: (token) => {
-                    console.log(token);
-                    this.emitter.emit("chunk", token);
-                }
-            })]
+            callbacks: [
+                BaseCallbackHandler.fromMethods({
+                    handleLLMNewToken: (token) => {
+                        console.log(token);
+                        this.emitter.emit("chunk", token);
+                    },
+                }),
+            ],
         });
+        // init the memory component
+        this.memoryComponent = new Memory(this.model);
+        await this.memoryComponent.init();
         // make a prompt
-        if (!config.memory)
-            this.prompt = ChatPromptTemplate.fromMessages([
-                ["system", `${config.prompt}
+        this.prompt = ChatPromptTemplate.fromTemplate(`${config.prompt}
 
 Current date and time:
 {dateTimeString}
 Time zone:
-UTC{timeZone}`],
-                new MessagesPlaceholder("history"),
-                ["human", "{input}"],
-            ]);
-        else
-            this.prompt = ChatPromptTemplate.fromTemplate(`${config.prompt}
+{timeZone}
 
-Current date and time:
-{dateTimeString}
-Time zone:
-UTC{timeZone}
-
-Relevant pieces of information:
-{history}
+${config.memory ? `Relevant previous pieces of information/conversation:
+{relevantDocs}
 (Do not use these if they are not relevant)
+` : ""}
+Previous conversation:
+{conversationSummary}
 
 Current conversation:
 Human: {input}
 AI: `);
         // make a chain
-        this.llmChain = new ConversationChain({
-            memory: this.memory,
-            prompt: this.prompt,
-            llm: this.model
-        });
+        this.llmChain = this.prompt.pipe(this.model);
     }
     // generate function
     async generate(input) {
         // get the date
         let date = new Date();
-        // get response, but with a callback that emits an event on data recv
-        let { response } = await this.llmChain.invoke({
+        // get any relevant memories
+        let memories = await this.memoryComponent.retrieveMemory(input);
+        // get response
+        let { content: response } = await this.llmChain.invoke({
             input,
-            dateTimeString: `${date.toLocaleDateString("en-US")} ${date.toLocaleTimeString("en-US")}`,
-            timeZone: `UTC${date.getTimezoneOffset() > 0 ? "+" : ""}${date.getTimezoneOffset()}`
+            dateTimeString: `${date.toLocaleDateString(
+                "en-US"
+            )} ${date.toLocaleTimeString("en-US")}`,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            relevantDocs: memories.relevantDocs,
+            conversationSummary: memories.conversationSummary || "N/A"
         });
         // if there's a memory store, save history
-        if (config.memory) await this.memoryComponent.save();
-        // return the reseponse
+        await this.memoryComponent.saveMessage(input, response);
+        // return the response
         return response;
     }
 }

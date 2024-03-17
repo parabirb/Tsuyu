@@ -14,7 +14,8 @@ Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will
 6. **If you are not on Mac and want to use CUDA, you will need to download the relevant binary for your OS. If you're on Mac or do not have a NVIDIA GPU, you can skip this step.** To do this, simply run `npx --no node-llama-cpp download --cuda` in the Tsuyu repository.
 7. Create a `models` folder inside the Tsuyu repository, then download your preferred LLM in GGUF format and move it into the folder. We recommend [gpt4all-falcon-newbpe-q4_0.gguf](https://gpt4all.io/models/gguf/gpt4all-falcon-newbpe-q4_0.gguf).
 8. Write your config file to `config.json`. An example is provided in `config.example.json`. Using long-term memory may cause generations to take longer.
-9. You're ready to run Tsuyu! Just do `node .` and you should be ready. As Tsuyu is an officially supported port of Ame, you can join the [Discord server](https://discord.gg/y9H8NWDxeC) if you have any questions or need help.
+9. **If you are using long-term memory, you will have to set an initial memory.** You can do this by modifying `initial_document.txt`.
+10. You're ready to run Tsuyu! Just do `node .` and you should be ready. If you installed the web UI, you can visit the port to see an accessible interface. As Tsuyu is an officially supported port of Ame, you can join the [Discord server](https://discord.gg/y9H8NWDxeC) if you have any questions or need help.
 
 ## Tsuyu API Endpoints
 Tsuyu currently provides three API endpoints.
@@ -32,9 +33,6 @@ There will also be programmatic ways to interact with the Tsuyu controller in th
 
 ## Known issues
 - Streaming does not currently work. This should (hopefully) be fixed with the next LangChain release.
-- Errors start occurring if the chat history gets too long. I have no clue why.
-- Long-term memory doesn't return the most relevant documents. Still figuring this one out.
-- New node-llama-cpp versions are a bit fucky to install. This should also (hopefully) be fixed with the next LangChain release.
 
 ## Acknowledgements
 This project would not be possible without LangChain.js, node-llama-cpp, Transformers.js, CloseVector, and fluent-ffmpeg.
