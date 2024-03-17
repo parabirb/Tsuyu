@@ -11,9 +11,9 @@ Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will
 3. In another folder, download the Tsuyu WebUI repository (`git clone git@github.com:parabirb/Tsuyu-WebUI.git`).
 4. Run `npm install`, then `npm build` in the Tsuyu WebUI repository.
 5. Move the `build` folder in the Tsuyu WebUI repository to the Tsuyu repository.
-6. **If you are not on Mac and want to use CUDA, you will need to download the relevant binary for your OS. If you're on Mac or do not have a NVIDIA GPU, you can skip this step.** To do this, create a new folder outside of either repository, and run `npm i node-llama-cpp`. Then, run `npx --no node-llama-cpp download --cuda`. Delete the `node-llama-cpp` directory in the Tsuyu repository's `node_modules`, then move the `node-llama-cpp` from your new folder's `node_modules` into the Tsuyu repository's `node_modules`.
+6. **If you are not on Mac and want to use CUDA, you will need to download the relevant binary for your OS. If you're on Mac or do not have a NVIDIA GPU, you can skip this step.** To do this, simply run `npx --no node-llama-cpp download --cuda` in the Tsuyu repository.
 7. Create a `models` folder inside the Tsuyu repository, then download your preferred LLM in GGUF format and move it into the folder. We recommend [gpt4all-falcon-newbpe-q4_0.gguf](https://gpt4all.io/models/gguf/gpt4all-falcon-newbpe-q4_0.gguf).
-8. Write your config file to `config.json`. An example is provided in `config.example.json`. Note that the `embeddingLlamaConfig` is not required if you are not using long-term memory (set by the `memory` key). Using long-term memory may cause generations to take longer.
+8. Write your config file to `config.json`. An example is provided in `config.example.json`. Using long-term memory may cause generations to take longer.
 9. You're ready to run Tsuyu! Just do `node .` and you should be ready. As Tsuyu is an officially supported port of Ame, you can join the [Discord server](https://discord.gg/y9H8NWDxeC) if you have any questions or need help.
 
 ## Tsuyu API Endpoints

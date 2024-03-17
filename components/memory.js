@@ -19,14 +19,10 @@ function testDir(dir) {
 
 // class
 export default class Memory {
-    // constructoor
-    constructor(llmPath) {
-        this.llmPath = llmPath;
-    }
     // initialization function
     async init() {
         // create an embedding thing
-        this.embeddings = new Embeddings(this.llmPath);
+        this.embeddings = new Embeddings();
         await this.embeddings.init();
         // set the memory dir
         this.memoryDir = path.join(process.cwd(), "memory");
@@ -41,7 +37,8 @@ export default class Memory {
         // make a memory object
         this.memory = new VectorStoreRetrieverMemory({
             vectorStoreRetriever: this.vectorStore.asRetriever(config.memoryDocs),
-            memoryKey: "history"
+            memoryKey: "history",
+            inputKey: "input"
         });
     }
     // save message

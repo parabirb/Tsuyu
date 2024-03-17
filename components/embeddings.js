@@ -1,31 +1,21 @@
 // deps
-import { getLlama } from "llama-beta";
+import { pipeline } from "@xenova/transformers";
 import config from "../config.json" assert { type: "json" };
 
 // class
 export default class Embeddings {
     // constructor
-    constructor(llmPath) {
-        this.llmPath = llmPath;
-    }
+    constructor() {}
     // init function
     async init() {
-        this.llama = await getLlama();
-        this.model = await this.llama.loadModel({ modelPath: this.llmPath, ...config.embeddingLlamaConfig });
-        this.embeddingContext = await this.model.createEmbeddingContext({
-            contextSize: Math.min(4096, this.model.trainContextSize)
-        });
-    }
-    // embed query
-    async embedQuery(text) {
-        return (await this.embeddingContext.getEmbeddingFor(text)).vector;
+        this.embedder = await pipeline("feature-extraction", config.embeddings);
     }
     // embed documents
     async embedDocuments(texts) {
-        let embeddings = [];
-        for (let text of texts) {
-            embeddings.push((await this.embeddingContext.getEmbeddingFor(text)).vector);
-        }
-        return embeddings;
+        return (await this.embedder(texts, { pooling: "mean", normalize: true })).tolist();
+    }
+    // embed query
+    async embedQuery(text) {
+        return (await this.embedDocuments([text]))[0];
     }
 }

@@ -26,7 +26,7 @@ export default class LLM {
         // if saveable memory is enabled
         if (config.memory) {
             // init the memory component
-            this.memoryComponent = new Memory(this.llmPath);
+            this.memoryComponent = new Memory();
             await this.memoryComponent.init();
             // set our memory to feed to the llm chain
             this.memory = this.memoryComponent.memory;
@@ -37,6 +37,7 @@ export default class LLM {
             this.memory = new BufferMemory({
                 returnMessages: true,
                 memoryKey: "history",
+                inputKey: "input"
             });
         }
         // create the model
@@ -53,15 +54,26 @@ export default class LLM {
         // make a prompt
         if (!config.memory)
             this.prompt = ChatPromptTemplate.fromMessages([
-                ["system", config.prompt],
+                ["system", `${config.prompt}
+
+Current date and time:
+{dateTimeString}
+Time zone:
+UTC{timeZone}`],
                 new MessagesPlaceholder("history"),
                 ["human", "{input}"],
             ]);
         else
             this.prompt = ChatPromptTemplate.fromTemplate(`${config.prompt}
 
+Current date and time:
+{dateTimeString}
+Time zone:
+UTC{timeZone}
+
 Relevant pieces of information:
 {history}
+(Do not use these if they are not relevant)
 
 Current conversation:
 Human: {input}
@@ -75,9 +87,13 @@ AI: `);
     }
     // generate function
     async generate(input) {
+        // get the date
+        let date = new Date();
         // get response, but with a callback that emits an event on data recv
         let { response } = await this.llmChain.invoke({
-            input
+            input,
+            dateTimeString: `${date.toLocaleDateString("en-US")} ${date.toLocaleTimeString("en-US")}`,
+            timeZone: `UTC${date.getTimezoneOffset() > 0 ? "+" : ""}${date.getTimezoneOffset()}`
         });
         // if there's a memory store, save history
         if (config.memory) await this.memoryComponent.save();
