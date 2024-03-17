@@ -1,5 +1,5 @@
 # Tsuyu (梅雨)
-Tsuyu is a lightweight virtual assistant framework based off Ame's design. While Tsuyu isn't particularly customizable at the moment, it provides a functional, fast alternative to Ame for those with less powerful systems and those who don't wish to work with Python. Tsuyu is also typically easier to install.
+Tsuyu is a lightweight virtual assistant framework based off Ame's design. While Tsuyu isn't particularly customizable at the moment, it provides a functional, fast alternative to Ame for those with less powerful systems and those who don't wish to work with Python. Tsuyu is also typically easier to install, and has features that Ame doesn't (like streaming).
 
 **TSUYU IS NOT READY FOR RELEASE YET! There are bugs. Only use Tsuyu for testing.**
 
@@ -28,11 +28,9 @@ Tsuyu currently provides three API endpoints.
     * `input` - A string containing the STT model's transcription of the recording.
     * `output` - A string containing the LLM's generation.
     * `tts` - A boolean to indicate whether TTS was generated or not.
+* `GET /api/v1/sse` will start a server-side events stream. Whenever a chunk is geenerated by the LLM, it will be passed through the stream.
 
 There will also be programmatic ways to interact with the Tsuyu controller in the future, like with Ame.
-
-## Known issues
-- Streaming does not currently work. This should (hopefully) be fixed with the next LangChain release.
 
 ## Acknowledgements
 This project would not be possible without LangChain.js, node-llama-cpp, Transformers.js, CloseVector, and fluent-ffmpeg.
