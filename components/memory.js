@@ -1,8 +1,8 @@
 // deps
 import fs from "fs";
+import Embeddings from "./embeddings.js";
 import config from "../config.json" assert { type: "json" };
 import { VectorStoreRetrieverMemory } from "langchain/memory";
-import { LlamaCppEmbeddings } from "@langchain/community/embeddings/llama_cpp";
 import { CloseVectorNode } from "@langchain/community/vectorstores/closevector/node";
 
 // to test if directory has been created
@@ -22,17 +22,20 @@ export default class Memory {
     constructor(llmPath) {
         this.llmPath = llmPath;
     }
-
     // initialization function
     async init() {
+        // create an embedding thing
+        this.embeddings = new Embeddings(this.llmPath);
+        await this.embeddings.init();
         // set the memory dir
         this.memoryDir = path.join(process.cwd(), "memory");
         // if the memory dir has been initialized
-        if (testDir(this.memoryDir)) this.vectorStore = await CloseVectorNode.load(this.memoryDir, new LlamaCppEmbeddings({ modelPath: this.llmPath }), { space: "cosine" });
+        if (testDir(this.memoryDir)) this.vectorStore = await CloseVectorNode.load(this.memoryDir, this.embeddings, { space: "cosine" });
         // otherwise
         else {
             fs.mkdirSync(this.memoryDir);
-            this.vectorStore = new CloseVectorNode(new LlamaCppEmbeddings({ modelPath: this.llmPath }), { space: "cosine" });
+            this.vectorStore = await CloseVectorNode.fromTexts([fs.readFileSync(path.join(process.cwd(), "initial_document.txt")).toString()], [{ id: 1 }], this.embeddings, { space: "cosine" });
+            await this.save();
         }
         // make a memory object
         this.memory = new VectorStoreRetrieverMemory({

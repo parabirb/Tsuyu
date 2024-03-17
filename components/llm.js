@@ -29,7 +29,7 @@ export default class LLM {
         // create the model
         this.model = new ChatLlamaCpp({ modelPath: this.llmPath, topK: config.topK, topP: config.topP, temperature: config.temperature, maxTokens: config.maxTokens });
         // make a prompt
-        this.prompt = ChatPromptTemplate.fromMessages([
+        if (!config.memory) this.prompt = ChatPromptTemplate.fromMessages([
             [
                 "system",
                 config.prompt
@@ -40,6 +40,14 @@ export default class LLM {
                 "{input}"
             ]
         ]);
+        else this.prompt = ChatPromptTemplate.fromTemplate(`${config.prompt}
+
+Relevant pieces of information:
+{history}
+
+Current conversation:
+Human: {input}
+AI: `);
         // make a chain
         this.llmChain = new ConversationChain({
             memory: this.memory,
