@@ -1,6 +1,6 @@
 // deps
-
 import { getLlama } from "llama-beta";
+import config from "../config.json" assert { type: "json" };
 
 // class
 export default class Embeddings {
@@ -11,7 +11,7 @@ export default class Embeddings {
     // init function
     async init() {
         this.llama = await getLlama();
-        this.model = await this.llama.loadModel({ modelPath: this.llmPath });
+        this.model = await this.llama.loadModel({ modelPath: this.llmPath, ...config.embeddingLlamaConfig });
         this.embeddingContext = await this.model.createEmbeddingContext({
             contextSize: Math.min(4096, this.model.trainContextSize)
         });

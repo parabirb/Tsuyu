@@ -2,10 +2,15 @@
     "port": 8080,
     "memory": false,
     "memoryDocs": 4,
-    "topK": 30,
-    "topP": 0.85,
-    "temperature": 0.5,
-    "maxTokens": 1000,
+    "llamaConfig": {
+        "topK": 30,
+        "topP": 0.85,
+        "gpuLayers": 5,
+        "temperature": 0.5,
+        "maxTokens": 1000
+    },
+    "embeddingLlamaConfig": {
+    },
     "llm": "gpt4all-falcon-newbpe-q4_0.gguf",
     "stt": "Xenova/whisper-small",
     "tts": "Xenova/speecht5_tts",

@@ -46,7 +46,7 @@ app.use(bodyParser.json());
 app.use(express.static("build"));
 // extend with busboy to allow uploads
 bb.extend(app, {
-    upload: true
+    upload: true,
 });
 
 // on chunk receive (llm)
@@ -63,12 +63,14 @@ app.post("/api/v1/text", async (req, res) => {
     console.log(`Generation requested: ${req.body.input}`);
     // generate output with the llm
     let output = await llm.generate(req.body.input);
+    // log the output
+    console.log(`Output generated: ${output}`);
     // if tts is enabled, speak the output
     if (tts) await tts.speak(output);
     // return
     res.json({
         output,
-        tts: !!tts
+        tts: !!tts,
     });
 });
 
@@ -79,25 +81,29 @@ app.post("/api/v1/full", async (req, res) => {
         res.json({
             input: "N/A",
             output: "STT is turned off on this Tsuyu instance.",
-            tts: false
+            tts: false,
         });
         return;
     }
     // log
-    console.log("Generation through full endpoint requested. Running transcription...");
+    console.log(
+        "Generation through full endpoint requested. Running transcription..."
+    );
     // get the transcription
     const input = await stt.transcribe(req.files.recording.file);
     // log
     console.log(`Transcription finished: ${input}`);
     // get output from the llm
     let output = await llm.generate(input);
+    // log the output
+    console.log(`Output generated: ${output}`);
     // if tts is enabled, speak the output
     if (tts) await tts.speak(output);
     // return
     res.json({
         input,
         output,
-        tts: !!tts
+        tts: !!tts,
     });
 });
 

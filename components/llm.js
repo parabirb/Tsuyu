@@ -8,7 +8,10 @@ import { ConversationChain } from "langchain/chains";
 import config from "../config.json" assert { type: "json" };
 import { BaseCallbackHandler } from "@langchain/core/callbacks/base";
 import { ChatLlamaCpp } from "@langchain/community/chat_models/llama_cpp";
-import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
+import {
+    ChatPromptTemplate,
+    MessagesPlaceholder,
+} from "@langchain/core/prompts";
 
 // export class
 export default class LLM {
@@ -31,23 +34,31 @@ export default class LLM {
         // otherwise
         else {
             // make a buffer memory
-            this.memory = new BufferMemory({ returnMessages: true, memoryKey: "history" });
+            this.memory = new BufferMemory({
+                returnMessages: true,
+                memoryKey: "history",
+            });
         }
         // create the model
-        this.model = new ChatLlamaCpp({ modelPath: this.llmPath, topK: config.topK, topP: config.topP, temperature: config.temperature, maxTokens: config.maxTokens, verbose: true });
+        this.model = new ChatLlamaCpp({
+            modelPath: this.llmPath,
+            ...config.llamaConfig,
+            callbacks: [BaseCallbackHandler.fromMethods({
+                handleLLMNewToken: (token) => {
+                    console.log(token);
+                    this.emitter.emit("chunk", token);
+                }
+            })]
+        });
         // make a prompt
-        if (!config.memory) this.prompt = ChatPromptTemplate.fromMessages([
-            [
-                "system",
-                config.prompt
-            ],
-            new MessagesPlaceholder("history"),
-            [
-                "human",
-                "{input}"
-            ]
-        ]);
-        else this.prompt = ChatPromptTemplate.fromTemplate(`${config.prompt}
+        if (!config.memory)
+            this.prompt = ChatPromptTemplate.fromMessages([
+                ["system", config.prompt],
+                new MessagesPlaceholder("history"),
+                ["human", "{input}"],
+            ]);
+        else
+            this.prompt = ChatPromptTemplate.fromTemplate(`${config.prompt}
 
 Relevant pieces of information:
 {history}
@@ -59,8 +70,7 @@ AI: `);
         this.llmChain = new ConversationChain({
             memory: this.memory,
             prompt: this.prompt,
-            llm: this.model,
-            verbose: true
+            llm: this.model
         });
     }
     // generate function
@@ -68,13 +78,6 @@ AI: `);
         // get response, but with a callback that emits an event on data recv
         let { response } = await this.llmChain.invoke({
             input
-        }, {
-            callbacks: [BaseCallbackHandler.fromMethods({
-                handleLLMNewToken: (token) => {
-                    console.log(token);
-                    this.emitter.emit("chunk", token);
-                }
-            })]
         });
         // if there's a memory store, save history
         if (config.memory) await this.memoryComponent.save();

@@ -26,7 +26,6 @@
   "dependencies": {
     "@langchain/community": "^0.0.40",
     "@langchain/core": "^0.1.48",
-    "@llama-node/llama-cpp": "^0.1.6",
     "@xenova/transformers": "^2.16.0",
     "better-sse": "^0.11.0",
     "body-parser": "^1.20.2",
@@ -37,8 +36,8 @@
     "fluent-ffmpeg": "^2.1.2",
     "gpt4all": "^2.2.0",
     "langchain": "^0.1.28",
-    "llama-beta": "npm:node-llama-cpp@^3.0.0-beta.14",
     "node-llama-cpp": "^2.8.8",
+    "llama-beta": "npm:node-llama-cpp@^3.0.0-beta.14",
     "wavefile": "^11.0.0"
   }
 }
