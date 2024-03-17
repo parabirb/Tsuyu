@@ -7,5 +7,7 @@
     "maxTokens": 1000,
     "llm": "gpt4all-falcon-newbpe-q4_0.gguf",
     "stt": "Xenova/whisper-small",
+    "tts": "Xenova/speecht5_tts",
+    "ttsEmbeddings": "https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin",
     "prompt": "You are Tsuyu, a chatbot designed to be integrated with a web UI. As such, you can output Markdown and inline KaTeX (surrounded by dollar signs). You should be helpful and kind."
 }
