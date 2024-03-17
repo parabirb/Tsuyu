@@ -11,9 +11,9 @@
         "temperature": 0.5,
         "batchSize": 512,
         "maxTokens": 1024,
-        "verbose": true
+        "verbose": false
     },
-    "llm": "gpt4all-falcon-newbpe-q4_0.gguf",
+    "llm": "mistral-7b-instruct-v0.1.Q4_0.gguf",
     "stt": "Xenova/whisper-small",
     "tts": "Xenova/speecht5_tts",
     "embeddings": "Xenova/all-MiniLM-L6-v2",
