@@ -3,15 +3,10 @@ import path from "path";
 import { cwd } from "process";
 import Memory from "./memory.js";
 import EventEmitter from "events";
-import { BufferMemory } from "langchain/memory";
-import { ConversationChain } from "langchain/chains";
+import Modules from "./modules.js";
 import config from "../config.json" assert { type: "json" };
-import { BaseCallbackHandler } from "@langchain/core/callbacks/base";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatLlamaCpp } from "@langchain/community/chat_models/llama_cpp";
-import {
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-} from "@langchain/core/prompts";
 
 // export class
 export default class LLM {
@@ -26,8 +21,10 @@ export default class LLM {
         // create the model
         this.model = new ChatLlamaCpp({
             modelPath: this.llmPath,
-            ...config.llamaConfig
+            ...config.llamaConfig,
         });
+        // if modules are enabled, init our modules
+        if (config.modules) this.modules = new Modules(this.llmPath);
         // init the memory component
         this.memoryComponent = new Memory(this.model);
         await this.memoryComponent.init();
@@ -39,10 +36,22 @@ Current date and time:
 Time zone:
 {timeZone}
 
-${config.memory ? `Relevant previous pieces of information/conversation:
+${
+    config.memory
+        ? `Relevant previous pieces of information/conversation:
 {relevantDocs}
 (Do not use these if they are not relevant)
-` : ""}
+`
+        : ""
+}
+${
+    config.modules
+        ? `Relevant information fetched by your modules:
+{moduleInfo}
+(Do not use this if it is not relevant)
+`
+        : ""
+}
 Previous conversation:
 {conversationSummary}
 
@@ -68,7 +77,10 @@ AI: `);
             )} ${date.toLocaleTimeString("en-US")}`,
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             relevantDocs: memories.relevantDocs,
-            conversationSummary: memories.conversationSummary || "N/A"
+            conversationSummary: memories.conversationSummary || "N/A",
+            moduleInfo: config.modules
+                ? await this.modules.callModule(input, memories.relevantDocs)
+                : undefined,
         });
         // chunks
         for await (let chunk of stream) {
