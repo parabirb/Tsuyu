@@ -26,15 +26,7 @@ export default class LLM {
         // create the model
         this.model = new ChatLlamaCpp({
             modelPath: this.llmPath,
-            ...config.llamaConfig,
-            callbacks: [
-                BaseCallbackHandler.fromMethods({
-                    handleLLMNewToken: (token) => {
-                        console.log(token);
-                        this.emitter.emit("chunk", token);
-                    },
-                }),
-            ],
+            ...config.llamaConfig
         });
         // init the memory component
         this.memoryComponent = new Memory(this.model);
@@ -66,8 +58,10 @@ AI: `);
         let date = new Date();
         // get any relevant memories
         let memories = await this.memoryComponent.retrieveMemory(input);
-        // get response
-        let { content: response } = await this.llmChain.invoke({
+        // empty response string
+        let response = "";
+        // get stream
+        let stream = await this.llmChain.stream({
             input,
             dateTimeString: `${date.toLocaleDateString(
                 "en-US"
@@ -76,6 +70,15 @@ AI: `);
             relevantDocs: memories.relevantDocs,
             conversationSummary: memories.conversationSummary || "N/A"
         });
+        // chunks
+        for await (let chunk of stream) {
+            // emit ana event
+            this.emitter.emit("chunk", chunk.content);
+            // add to the response
+            response += chunk.content;
+        }
+        // trim response
+        response = response.trim();
         // if there's a memory store, save history
         await this.memoryComponent.saveMessage(input, response);
         // return the response

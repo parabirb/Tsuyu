@@ -1,6 +1,7 @@
 // deps
 import cors from "cors";
 import path from "path";
+import sse from "better-sse";
 import { cwd } from "process";
 import express from "express";
 import bb from "express-busboy";
@@ -8,7 +9,6 @@ import bodyParser from "body-parser";
 import LLM from "./components/llm.js";
 import STT from "./components/stt.js";
 import TTS from "./components/tts.js";
-// import { createSession } from "better-sse";
 import config from "./config.json" assert { type: "json" };
 
 // load the LLM
@@ -49,9 +49,6 @@ bb.extend(app, {
     upload: true,
 });
 
-// on chunk receive (llm)
-llm.emitter.on("chunk", (data) => console.log(`LLM generated chunk: ${data}`));
-
 // send ame speech upon request
 app.get("/ame_speech.wav", async (req, res) => {
     res.sendFile(path.join(cwd(), "ame_speech.wav"));
@@ -67,6 +64,8 @@ app.post("/api/v1/text", async (req, res) => {
     console.log(`Output generated: ${output}`);
     // if tts is enabled, speak the output
     if (tts) await tts.speak(output);
+    // log on output spoken
+    console.log("Output processing done!");
     // return
     res.json({
         output,
@@ -99,12 +98,28 @@ app.post("/api/v1/full", async (req, res) => {
     console.log(`Output generated: ${output}`);
     // if tts is enabled, speak the output
     if (tts) await tts.speak(output);
+    // log on output spoken
+    console.log("Output processing done!");
     // return
     res.json({
         input,
         output,
         tts: !!tts,
     });
+});
+
+// sse endpoint
+app.get("/api/v1/sse", async (req, res) => {
+    // create a session
+    let session = await sse.createSession(req, res);
+    // configure an event listener
+    let eventListener = (data) => {
+        session.push(data);
+    }
+    // hook it to the event emitter
+    llm.emitter.on("chunk", eventListener);
+    // when the session closes, remove the event listener
+    session.on("disconnected", () => llm.emitter.removeListener("chunk", eventListener));
 });
 
 // set app to listen on config port
