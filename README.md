@@ -29,3 +29,12 @@ Tsuyu currently provides three API endpoints.
     * `tts` - A boolean to indicate whether TTS was generated or not.
 
 There will also be programmatic ways to interact with the Tsuyu controller in the future, like with Ame.
+
+## Known issues
+- Streaming does not currently work. This should (hopefully) be fixed with the next LangChain release.
+- Errors start occurring if the chat history gets too long. I have no clue why.
+- Long-term memory doesn't return the most relevant documents. Still figuring this one out.
+- New node-llama-cpp versions are a bit fucky to install. This should also (hopefully) be fixed with the next LangChain release.
+
+## Acknowledgements
+This project would not be possible without LangChain.js, node-llama-cpp, Transformers.js, CloseVector, and fluent-ffmpeg.
