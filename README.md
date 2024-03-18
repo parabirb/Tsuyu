@@ -11,7 +11,7 @@ Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will
 3. In another folder, download the Tsuyu WebUI repository (`git clone git@github.com:parabirb/Tsuyu-WebUI.git`).
 4. Run `npm install`, then `npm build` in the Tsuyu WebUI repository.
 5. Move the `build` folder in the Tsuyu WebUI repository to the Tsuyu repository.
-6. **If you are not on Mac and want to use CUDA, you will need to download the relevant binary for your OS. If you're on Mac or do not have a NVIDIA GPU, you can skip this step.** To do this, simply run `npx --no node-llama-cpp download --cuda` in the Tsuyu repository.
+6. **If you are not on Mac and want to use CUDA, you will need to download the relevant binary for your OS. If you're on Mac or do not have a NVIDIA GPU, you can skip this step.** To do this, simply run `npx --no node-llama-cpp download --cuda` in the Tsuyu repository. If you get an error, run `npm install node-llama-cpp` and try again.
 7. Create a `models` folder inside the Tsuyu repository, then download your preferred LLM in GGUF format and move it into the folder. We recommend either [mistral-7b-instruct-v0.1.Q4_0.gguf](https://gpt4all.io/models/gguf/mistral-7b-instruct-v0.1.Q4_0.gguf) or [gpt4all-falcon-newbpe-q4_0.gguf](https://gpt4all.io/models/gguf/gpt4all-falcon-newbpe-q4_0.gguf).
 8. Write your config file to `config.json`. An example is provided in `config.example.json`.
 9. **If you are using long-term memory, you will have to set an initial memory.** You can do this by modifying `initial_document.txt`.
