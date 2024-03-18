@@ -39,7 +39,7 @@ As a reimplementation of Ame v1's features, Tsuyu has the same goals. Below is a
 
 🔴 Planned | 🟡 In progress | 🟠 Workable, but not fully finished | 🟢 Finished
 
-### Core
+### Core (v1)
 
 Component                     | Status 
 ----------------------------- | -----
@@ -50,7 +50,7 @@ Primary controller            |  🟡
 Module handler                |  🟢
 Server/client interface       |  🟢
 
-### Extensions
+### Extensions (v1)
 
 Component                     | Status 
 ----------------------------- | -----
@@ -58,6 +58,14 @@ Client UI                     |  🟢
 Discord interface             |  🔴
 Telegram interface            |  🔴
 Documentation                 |  🟠
+
+### Additional Features (v1.1)
+Component                     | Status 
+----------------------------- | -----
+Context summarization         |  🟢
+Streaming                     |  🟢
+Reverse proxy                 |  🟢
+Vision                        |  🟡
 
 ## Acknowledgements
 This project would not be possible without LangChain.js, node-llama-cpp, Transformers.js, CloseVector, and fluent-ffmpeg.
