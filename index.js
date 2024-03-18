@@ -138,5 +138,5 @@ if (config.forwarding) {
     console.log(`URL for tunneling: ${tunnel.url}`);
     // log password
     let password = await fetch("https://loca.lt/mytunnelpassword").then(res => res.text());
-    console.log(`You will need a password to access Tsuyu externally. The password is: ${password}`);
+    console.log(`You will need a password to access the tunnel from the browser. The password is: ${password}`);
 }
