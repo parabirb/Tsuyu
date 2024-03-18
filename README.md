@@ -17,6 +17,8 @@ Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will
 9. **If you are using long-term memory, you will have to set an initial memory.** You can do this by modifying `initial_document.txt`.
 10. You're ready to run Tsuyu! Just do `node .` and you should be ready. If you installed the web UI, you can visit the port to see an accessible interface. As Tsuyu is an officially supported port of Ame, you can join the [Discord server](https://discord.gg/y9H8NWDxeC) if you have any questions or need help.
 
+Note: STT will not work unless you have ffmpeg installed on your system. If you are on Windows, click [here](https://www.wikihow.com/Install-FFmpeg-on-Windows) for instructions on how to install ffmpeg. Mac users can install ffmpeg through [Homebrew](https://brew.sh), and Linux users can install ffmpeg through their package manager.
+
 ## Tsuyu API Endpoints
 Tsuyu currently provides four API endpoints.
 
