@@ -7,7 +7,7 @@ Tsuyu is a lightweight virtual assistant framework based off Ame's design. While
 Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will need node and npm installed. Here are the steps:
 
 1. Download the Tsuyu repository (`git clone git@github.com:parabirb/Tsuyu.git` or `git clone https://github.com/parabirb/Tsuyu.git`).
-2. Run `npm install`.
+2. Run `npm install` in the Tsuyu repository.
 3. In another folder, download the Tsuyu WebUI repository (`git clone git@github.com:parabirb/Tsuyu-WebUI.git` or `git clone https://github.com/parabirb/Tsuyu-WebUI.git`).
 4. Run `npm install`, then `npm build` in the Tsuyu WebUI repository.
 5. Move the `build` folder in the Tsuyu WebUI repository to the Tsuyu repository.
