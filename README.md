@@ -34,5 +34,30 @@ Tsuyu currently provides four API endpoints.
 
 There will also be programmatic ways to interact with the Tsuyu controller in the future, like with Ame.
 
+## Progress & Roadmap
+As a reimplementation of Ame v1's features, Tsuyu has the same goals. Below is a chart of our progress:
+
+🔴 Planned | 🟡 In progress | 🟢 Finished
+
+### Core
+
+Component                     | Status 
+----------------------------- | -----
+Speech-to-text                |  🟢
+Text-to-speech                |  🟢
+Long-term memory              |  🟢
+Primary controller            |  🟡
+Module handler                |  🟢
+Server/client interface       |  🟢
+
+### Extensions
+
+Component                     | Status 
+----------------------------- | -----
+Client UI                     |  🟢
+Discord interface             |  🔴
+Telegram interface            |  🔴
+Documentation                 |  🟡
+
 ## Acknowledgements
 This project would not be possible without LangChain.js, node-llama-cpp, Transformers.js, CloseVector, and fluent-ffmpeg.
