@@ -1,7 +1,7 @@
 # Tsuyu (梅雨)
 Tsuyu is a lightweight virtual assistant framework based off Ame's design. While Tsuyu isn't particularly customizable at the moment, it provides a functional, fast alternative to Ame for those with less powerful systems and those who don't wish to work with Python. Tsuyu is also typically easier to install, and has features that Ame doesn't (like streaming).
 
-**TSUYU IS NOT READY FOR RELEASE YET! There are bugs. Only use Tsuyu for testing.**
+**Tsuyu is currently in a preliminary state, and there may be bugs. Please join the Ame Discord server if you wish to report any issues.**
 
 ## Installing Tsuyu
 Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will need node and npm installed. Here are the steps:
