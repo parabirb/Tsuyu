@@ -37,7 +37,7 @@ There will also be programmatic ways to interact with the Tsuyu controller in th
 ## Progress & Roadmap
 As a reimplementation of Ame v1's features, Tsuyu has the same goals. Below is a chart of our progress:
 
-🔴 Planned | 🟡 In progress | 🟢 Finished
+🔴 Planned | 🟡 In progress | 🟠 Workable, but not fully finished | 🟢 Finished
 
 ### Core
 
@@ -57,7 +57,7 @@ Component                     | Status
 Client UI                     |  🟢
 Discord interface             |  🔴
 Telegram interface            |  🔴
-Documentation                 |  🟡
+Documentation                 |  🟠
 
 ## Acknowledgements
 This project would not be possible without LangChain.js, node-llama-cpp, Transformers.js, CloseVector, and fluent-ffmpeg.
