@@ -8,7 +8,7 @@ Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will
 
 1. Download the Tsuyu repository (`git clone git@github.com:parabirb/Tsuyu.git` or `git clone https://github.com/parabirb/Tsuyu.git`).
 2. Run `npm install`.
-3. In another folder, download the Tsuyu WebUI repository (`git clone git@github.com:parabirb/Tsuyu-WebUI.git` or `git clone https://github.com/parabirb/Tsuyu.git`).
+3. In another folder, download the Tsuyu WebUI repository (`git clone git@github.com:parabirb/Tsuyu-WebUI.git` or `git clone https://github.com/parabirb/Tsuyu-WebUI.git`).
 4. Run `npm install`, then `npm build` in the Tsuyu WebUI repository.
 5. Move the `build` folder in the Tsuyu WebUI repository to the Tsuyu repository.
 6. **If you are not on Mac and want to use CUDA, you will need to download the relevant binary for your OS. If you're on Mac or do not have a NVIDIA GPU, you can skip this step.** To do this, simply run `npx --no node-llama-cpp download --cuda` in the Tsuyu repository. If you get an error, run `npm install node-llama-cpp` and try again.
