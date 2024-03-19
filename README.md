@@ -101,7 +101,7 @@ HOWEVER, Tsuyu does have an [example](https://github.com/parabirb/Tsuyu-Modules)
 Here's what you need to know:
 
 * All modules should go in the `modules` folder.
-* Your `modules` folder should have an `index.js`, with the default export being an array of modules.
+* Your `modules` folder should have an `index.js`, with the default export being an array of the modules you want enabled.
 * A module should be an object with four properties:
     * `title`: This is the title of the module that the LLM will use when calling it. Your title should ideally be lowercase.
     * `function`: This is the function that will be called when the LLM attempts to run the module. **This function must take an object.** Your function should return a sentence that the LLM can read.
