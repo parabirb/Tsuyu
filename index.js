@@ -6,6 +6,7 @@ import { cwd } from "process";
 import express from "express";
 import bb from "express-busboy";
 import bodyParser from "body-parser";
+import localtunnel from "localtunnel";
 import LLM from "./components/llm.js";
 import STT from "./components/stt.js";
 import TTS from "./components/tts.js";
@@ -124,4 +125,18 @@ app.get("/api/v1/sse", async (req, res) => {
 
 // set app to listen on config port
 app.listen(config.port);
-console.log(`Listening on ${config.port}...`);
+console.log(`Listening on ${config.port}...
+If you installed a Web UI, you can visit http://localhost:${config.port} to access it.`);
+
+// if localtunnel is enabled
+if (config.forwarding) {
+    // log
+    console.log("Creating tunnel...");
+    // create tunnel
+    let tunnel = await localtunnel({ port: config.port });
+    // log the url
+    console.log(`URL for tunneling: ${tunnel.url}`);
+    // log password
+    let password = await fetch("https://loca.lt/mytunnelpassword").then(res => res.text());
+    console.log(`You will need a password to access the tunnel from the browser. The password is: ${password}`);
+}
