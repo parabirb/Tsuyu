@@ -1,5 +1,4 @@
 // deps
-import modules from "../modules/index.js";
 import config from "../config.json" assert { type: "json" };
 import { LlamaCpp } from "@langchain/community/llms/llama_cpp";
 
@@ -42,6 +41,8 @@ export default class Modules {
     }
     // call module function
     async callModule(input, memory) {
+        // get the modules
+        let { default: modules } = await import("../modules/index.js");
         // convert the modules to text
         let textModules = modules
             .map(
