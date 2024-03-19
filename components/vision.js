@@ -12,8 +12,8 @@ export default class Vision {
     // caption function
     async caption(imgPath) {
         // run the generation
-        let { generated_text } = await this.captioner(imgPath);
+        let generation = await this.captioner(imgPath);
         // return the text
-        return generated_text;
+        return generation[0].generated_text;
     }
 }

@@ -109,6 +109,35 @@ app.post("/api/v1/full", async (req, res) => {
     });
 });
 
+// text generation with vision
+app.post("/api/v1/vision", async (req, res) => {
+    // if vision is off
+    if (!config.vision) {
+        res.json({
+            output: "Vision is turned off on this Tsuyu instance.",
+            tts: false,
+        });
+        return;
+    }
+    // log
+    console.log(
+        `Generation through vision endpoint requested. Text input: ${req.body.input}`
+    );
+    // get output from the llm
+    let output = await llm.generate(req.body.input, req.files.image.file);
+    // log the output
+    console.log(`Output generated: ${output}`);
+    // if tts is enabled, speak the output
+    if (tts) await tts.speak(output);
+    // log on output spoken
+    console.log("Output processing done!");
+    // return
+    res.json({
+        output,
+        tts: !!tts,
+    });
+});
+
 // sse endpoint
 app.get("/api/v1/sse", async (req, res) => {
     // create a session
@@ -116,11 +145,13 @@ app.get("/api/v1/sse", async (req, res) => {
     // configure an event listener
     let eventListener = (data) => {
         session.push(data);
-    }
+    };
     // hook it to the event emitter
     llm.emitter.on("chunk", eventListener);
     // when the session closes, remove the event listener
-    session.on("disconnected", () => llm.emitter.removeListener("chunk", eventListener));
+    session.on("disconnected", () =>
+        llm.emitter.removeListener("chunk", eventListener)
+    );
 });
 
 // set app to listen on config port
@@ -137,6 +168,10 @@ if (config.forwarding) {
     // log the url
     console.log(`URL for tunneling: ${tunnel.url}`);
     // log password
-    let password = await fetch("https://loca.lt/mytunnelpassword").then(res => res.text());
-    console.log(`You will need a password to access the tunnel from the browser. The password is: ${password}`);
+    let password = await fetch("https://loca.lt/mytunnelpassword").then((res) =>
+        res.text()
+    );
+    console.log(
+        `You will need a password to access the tunnel from the browser. The password is: ${password}`
+    );
 }
