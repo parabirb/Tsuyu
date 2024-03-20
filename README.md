@@ -3,6 +3,37 @@ Tsuyu is a lightweight virtual assistant framework based off Ame's design. While
 
 **Tsuyu is currently in a preliminary state, and there may be bugs. Please join the Ame Discord server if you wish to report any issues.**
 
+## Why Try Tsuyu?
+For certain users, Tsuyu may provide key advantages over Ame, such as:
+* A simpler interface. Tsuyu's design is centered around providing lightweight interfaces that can quickly be turned into working assistant prototypes.
+* Lighter resource usage and faster generations. While Ame is meant to be run on enterprise-grade hardware, Tsuyu can run on ordinary consumer hardware. A simple gaming PC (without an RTX GPU) or Mac is oftentimes enough to get generations within just 20-30 seconds. Additionally Tsuyu is intended for use with 7B LLMs, Tsuyu's TTS model is dozens of times smaller than Ame's, and Tsuyu's STT model is also smaller. Even with STT, TTS, and Vision enabled, Tsuyu can often run much faster than Ame.
+* JavaScript interfacing. Ame is written fully in Python, but Tsuyu is written fully in JavaScript and designed to be integrated with JS from the bottom-up. If you don't want to write Python, Tsuyu provides massive advantages.
+* A more functional server/client interface. Ame doesn't currently provide a functional web interface, but Tsuyu does (note that Ame **will** have an API and web UI on par with Tsuyu's in the future). Additionally, as Tsuyu is written by a web developer, Tsuyu's interfaces are more in line with current standards.
+* Streaming. Tsuyu currently provides streaming in the controller, web API, and web UI. Ame currently does not.
+* Crude vision. Tsuyu supports simple, basic vision using ViT + GPT-2. Ame does not, although vision support is planned for the future. 
+* High levels of support. Users can go into the Ame Discord and get quick, fast, and helpful support from the Tsuyu dev.
+* Easier installation. Tsuyu is typically faster to get running than Ame.
+* No licensing. Tsuyu's core and Tsuyu's example modules are entirely in the public domain.
+
+We recommend Tsuyu for the following types of users:
+* Users who do not need fine-grained control.
+* Users who do not need extremely accurate generations.
+* Users who do not mind a more simplistic and less fleshed out API.
+* Users who are fine with less accurate, monolingual TTS.
+* Users who are not on enterprise hardware or who want quick generations.
+* Users who want access to one integrated pipeline without much fuss.
+* New users who don't want the complexity that comes with Ame.
+* Users who want public domain software.
+
+However, Ame may be more appropriate for these kinds of users:
+* Users who need highly accurate generations.
+* Users who need low-level control. While Tsuyu **does** provide direct access to its models through the component, Ame allows for far more control.
+* Users running enterprise-grade applications. Tsuyu is not stable at the moment, and Ame is more tweakable than Tsuyu.
+* Users who are more comfortable in Python. Tsuyu can be interfaced with in Python through its web API, but the current web API does not provide the same control as the JavaScript interface.
+* Users who want strict control over prompting. Ame is better for this use case.
+
+Overall, we recommend you evaluate your use case to figure out which one is better for you. However, for a lot of users, Tsuyu may be the better alternative.
+
 ## Installing Tsuyu
 Tsuyu is easier to run than Ame, but it'll still require a bit of work. You will need node and npm installed. Here are the steps:
 
@@ -73,7 +104,7 @@ console.log(await controller.generate("Hello, world!"));
 
 Additionally, the controller comes with two useful properties:
 * `emitter: EventEmitter` - An event emitter for streaming. Emits `chunk` events with data whenever a chunk is received from the LLM.
-* `llm: ChatLlamaCpp` - An interface for directly working with the LLM, in case you want to skip Tsuyu's prompting and pipelines. **Only powerusers should use this interface.** For more information on the ChatLlamaCpp interface, see the [LangChain.js](https://api.js.langchain.com/classes/langchain_community_chat_models_llama_cpp.ChatLlamaCpp.html) documentation.
+* `model: ChatLlamaCpp` - An interface for directly working with the LLM, in case you want to skip Tsuyu's prompting and pipelines. **Only powerusers should use this interface.** For more information on the ChatLlamaCpp interface, see the [LangChain.js](https://api.js.langchain.com/classes/langchain_community_chat_models_llama_cpp.ChatLlamaCpp.html) documentation.
 
 ## Tsuyu Web API Endpoints
 Tsuyu's web interface currently provides four API endpoints.

@@ -156,8 +156,8 @@ export default class Controller {
     get emitter() {
         return this.llm.emitter;
     }
-    // llm
-    get llm() {
+    // model
+    get model() {
         return this.llm.model;
     }
 }
