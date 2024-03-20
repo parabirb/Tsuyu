@@ -51,6 +51,7 @@ export default class Controller {
         console.log("[CONTROLLER] Output processing done!");
         // return
         return {
+            input,
             output,
             tts: !!this.tts,
         };
