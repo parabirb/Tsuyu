@@ -162,17 +162,19 @@ Server/client interface       |  🟢
 Component                     | Status 
 ----------------------------- | -----
 Client UI                     |  🟢
-Discord interface             |  🔴
-Telegram interface            |  🔴
+Discord interface             |  🟡
 Documentation                 |  🟢
 
-### Additional features (separate from Ame)
+### Additional features
 Component                     | Status 
 ----------------------------- | -----
 Context summarization         |  🟢
 Streaming                     |  🟢
 Reverse proxy                 |  🟢
 Vision                        |  🟢
+UI revamp                     |  🔴
+Installer                     |  🔴
+Logging                       |  🟡
 
 ## Acknowledgements
 This project would not be possible without LangChain.js, node-llama-cpp, Transformers.js, CloseVector, and fluent-ffmpeg.
