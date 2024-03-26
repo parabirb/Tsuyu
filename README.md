@@ -107,7 +107,7 @@ Additionally, the controller comes with two useful properties:
 * `model: ChatLlamaCpp` - An interface for directly working with the LLM, in case you want to skip Tsuyu's prompting and pipelines. **Only powerusers should use this interface.** For more information on the ChatLlamaCpp interface, see the [LangChain.js](https://api.js.langchain.com/classes/langchain_community_chat_models_llama_cpp.ChatLlamaCpp.html) documentation.
 
 ## Tsuyu Web API Endpoints
-Tsuyu's web interface currently provides four API endpoints.
+Tsuyu's web interface currently provides five API endpoints.
 
 * `GET /ame_speech.wav` will return the last line spoken by Ame, if there is one.
 * `POST /api/v1/text` with a JSON body of `{ input: String }` will feed the text to the LLM and provide a JSON output with two keys.
