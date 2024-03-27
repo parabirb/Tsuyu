@@ -7,22 +7,16 @@
     "useSummarizer": false,
     "historyPieces": 3,
     "llamaConfig": {
-        "topK": 30,
-        "topP": 0.85,
         "gpuLayers": 0,
-        "temperature": 0.5,
-        "batchSize": 2048,
-        "maxTokens": 1024,
-        "verbose": false
+        "useMmap": true
     },
-    "moduleLlamaConfig": {
+    "contextConfig": {
+        "batchSize": 2048
+    },
+    "params": {
         "topK": 30,
         "topP": 0.85,
-        "gpuLayers": 0,
-        "temperature": 0.5,
-        "batchSize": 2048,
-        "maxTokens": 512,
-        "verbose": false
+        "temperature": 0.5
     },
     "llm": "qwen1_5-0_5b-chat-q4_0.gguf",
     "hfModel": "Qwen/Qwen1.5-0.5B-Chat",

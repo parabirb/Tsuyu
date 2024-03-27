@@ -37,7 +37,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "langchain": "^0.1.28",
     "localtunnel": "^2.0.2",
-    "node-llama-cpp": "^2.8.8",
+    "node-llama-cpp": "^2.8.9",
     "wavefile": "^11.0.0"
   }
 }

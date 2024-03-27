@@ -31,8 +31,9 @@ function checkIfAllArgs(module, args) {
 // export class
 export default class Modules {
     // constructor
-    constructor(llm) {
+    constructor(llm, formatter) {
         this.llm = llm;
+        this.formatter = formatter;
     }
     // call module function
     async callModule(input, memory) {
@@ -51,7 +52,7 @@ ${Object.keys(module.args)
             .join("\n\n");
         // prompt the llm
         let response = await this.llm
-            .invoke(`Predict which module should be called based on the input and context. If no module should be called or if the module you want to call does not exist, return null. Also return null if you do not have all the arguments necessary to call the relevant module. Otherwise, return a JSON object with key "title" for the title and a key "args" with the relevant arguments.
+            .invoke(this.formatter.formatSingle(`Predict which module should be called based on the input and context. If no module should be called or if the module you want to call does not exist, return null. Also return null if you do not have all the arguments necessary to call the relevant module. Otherwise, return a JSON object with key "title" for the title and a key "args" with the relevant arguments.
 ${
     memory
         ? `These pieces of context may be relevant.
@@ -65,7 +66,7 @@ ${textModules}
 
 Input: ${input}
 
-Do not output ANYTHING other than either the JSON or the word "null".`);
+Do not output ANYTHING other than either the JSON or the word "null".`));
         // parse the output
         response = parseJson(response);
         // if it isn't json, return

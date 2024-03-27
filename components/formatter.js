@@ -89,6 +89,18 @@ ${summary}` : ""
             content: input
         });
         // format the prompt
-        return this.tokenizer.apply_chat_template(messages, { tokenize: false });
+        return this.tokenizer.apply_chat_template(messages, { tokenize: false, add_generation_prompt: true });
+    }
+    // format single function
+    formatSingle(input) {
+        // create messages array
+        let messages = [
+            {
+                role: "user",
+                content: input
+            }
+        ];
+        // return
+        return this.tokenizer.apply_chat_template(messages, { tokenize: false, add_generation_prompt: true });
     }
 }
