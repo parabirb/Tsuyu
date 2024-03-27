@@ -59,8 +59,10 @@ You should save a config to `config.json`. An example is provided to you in `con
 
 * `port`: A number with the port to run the web API on. You can omit this if you aren't running the web interface.
 * `forwarding`: A boolean that determines whether Tsuyu's web interface will run a reverse proxy (similar to ngrok) or not. If you aren't using the web interface, it's safe to omit this.
+* `token`: The token for Tsuyu's Discord bot. You can omit this if you aren't using the Discord integration.
+* `channel`: The channel where you'll be running Tsuyu's Discord bot. You can also omit this if you aren't using the Discord integration.
 * `memory`: Determines whether long-term memory is enabled or not. Set this to `true` if you wish to enable memory, and `false` if you do not. Enabling memory may cause some LLM-related bugs.
-* `modules`: Determines whether modules are enabled. Set this to `true` to enable modules, and `false` to leave them disabled. **Please note that enabling modules will increase VRAM usage, as two separate LLaMA contexts have to be created.**
+* `modules`: Determines whether modules are enabled. Set this to `true` to enable modules, and `false` to leave them disabled. **Please note that enabling modules will increase VRAM usage, as two separate LLaMA contexts have to be created. Additionally, LLaMA will be called twice per generation.**
 * `memoryDocs` - Determines how many memories the memory component will feed to the LLM on each generation. You can omit this if you have long-term memory disabled.
 * `useSummarizer` and `historyPieces` - `useSummarizer` determines the type of short-term memory (chat history) Tsuyu will use. If set to `true`, Tsuyu will call LLaMA to summarize the chatlogs once they get longer than `historyPieces` tokens. If set to `false`, Tsuyu will use a simple window-based chat history, keeping the last `historyPieces` input/output pairs in short-term memory. **These options do NOT impact long-term memory.**
 * `llamaConfig` - This is the config passed to llama.cpp when Tsuyu creates a `LlamaModel`. See [the node-llama-cpp docs](https://withcatai.github.io/node-llama-cpp/api/type-aliases/LlamaModelOptions) for more info.
@@ -164,7 +166,7 @@ Server/client interface       |  🟢
 Component                     | Status 
 ----------------------------- | -----
 Client UI                     |  🟢
-Discord interface             |  🟡
+Discord interface             |  🟢
 Documentation                 |  🟢
 
 ### Additional features

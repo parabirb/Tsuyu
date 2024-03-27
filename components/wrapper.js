@@ -38,11 +38,10 @@ export default class Wrapper {
     }
     // invoke
     async invoke(prompt) {
-        console.log(prompt);
         // empty response string
         let response = "";
         // create stream
-        let stream = await this.context.evaluate(
+        let stream = await this.invocationContext.evaluate(
             this.context.encode(prompt),
             this.params
         );
