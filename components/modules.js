@@ -31,13 +31,8 @@ function checkIfAllArgs(module, args) {
 // export class
 export default class Modules {
     // constructor
-    constructor(llmPath) {
-        this.llmPath = llmPath;
-        // create the model
-        this.llm = new LlamaCpp({
-            modelPath: this.llmPath,
-            ...config.moduleLlamaConfig,
-        });
+    constructor(llm) {
+        this.llm = llm;
     }
     // call module function
     async callModule(input, memory) {

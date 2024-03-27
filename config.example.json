@@ -24,7 +24,8 @@
         "maxTokens": 512,
         "verbose": false
     },
-    "llm": "mistral-7b-instruct-v0.1.Q4_0.gguf",
+    "llm": "qwen1_5-0_5b-chat-q4_0.gguf",
+    "hfModel": "Qwen/Qwen1.5-0.5B-Chat",
     "stt": "Xenova/whisper-small",
     "tts": "Xenova/speecht5_tts",
     "vision": "Xenova/vit-gpt2-image-captioning",

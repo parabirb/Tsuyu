@@ -5,9 +5,9 @@ import Memory from "./memory.js";
 import Vision from "./vision.js";
 import EventEmitter from "events";
 import Modules from "./modules.js";
+import Formatter from "./formatter.js";
 import config from "../config.json" assert { type: "json" };
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { ChatLlamaCpp } from "@langchain/community/chat_models/llama_cpp";
+import { LlamaCpp } from "@langchain/community/llms/llama_cpp";
 
 // export class
 export default class LLM {
@@ -20,12 +20,12 @@ export default class LLM {
         // set the llm path
         this.llmPath = path.join(cwd(), "models", config.llm);
         // create the model
-        this.model = new ChatLlamaCpp({
+        this.model = new LlamaCpp({
             modelPath: this.llmPath,
             ...config.llamaConfig,
         });
         // if modules are enabled, init our modules
-        if (config.modules) this.modules = new Modules(this.llmPath);
+        if (config.modules) this.modules = new Modules(this.model);
         // if vision is enabled, init vision
         if (config.vision) {
             this.vision = new Vision();
@@ -34,77 +34,9 @@ export default class LLM {
         // init the memory component
         this.memoryComponent = new Memory(this.model);
         await this.memoryComponent.init();
-        // make a prompt
-        this.prompt = ChatPromptTemplate.fromTemplate(`${config.prompt}
-
-Current date and time:
-{dateTimeString}
-Time zone:
-{timeZone}
-
-${
-    config.memory
-        ? `Relevant previous pieces of information/conversation:
-{relevantDocs}
-(Do not use these if they are not relevant)
-`
-        : ""
-}
-${
-    config.modules
-        ? `Relevant information fetched by your modules:
-{moduleInfo}
-(Do not use this if it is not relevant)
-`
-        : ""
-}
-Previous conversation:
-{conversationSummary}
-
-Current conversation:
-Human: {input}
-AI: `);
-        // if vision is enabled, make an alternative prompt for vision
-        if (config.vision) {
-            this.visionPrompt = ChatPromptTemplate.fromTemplate(`${
-                config.prompt
-            }
-
-Current date and time:
-{dateTimeString}
-Time zone:
-{timeZone}
-
-${
-    config.memory
-        ? `Relevant previous pieces of information/conversation:
-{relevantDocs}
-(Do not use these if they are not relevant)
-`
-        : ""
-}
-${
-    config.modules
-        ? `Relevant information fetched by your modules:
-{moduleInfo}
-(Do not use this if it is not relevant)
-`
-        : ""
-}
-Previous conversation:
-{conversationSummary}
-
-Note that the user has attached an image to their message.
-The image caption is as follows: {caption}
-
-Current conversation:
-Human: {input}
-AI: `);
-            // make a chain
-            this.visionLlmChain = this.visionPrompt.pipe(this.model);
-        }
-        // make a chain
-        this.llmChain = this.prompt.pipe(this.model);
+        // make a formatter
+        this.formatter = new Formatter();
+        await this.formatter.init();
     }
     // generate function
     async generate(input, imgPath = null) {
@@ -114,10 +46,8 @@ AI: `);
         let memories = await this.memoryComponent.retrieveMemory(input);
         // empty response string
         let response = "";
-        // empty stream
-        let stream;
         // get stream
-        if (!config.vision || !imgPath) stream = await this.llmChain.stream({
+        let stream = await this.model.stream(this.formatter.format({
             input,
             dateTimeString: `${date.toLocaleDateString(
                 "en-US"
@@ -128,23 +58,11 @@ AI: `);
             moduleInfo: config.modules
                 ? await this.modules.callModule(input, memories.relevantDocs)
                 : undefined,
-        });
-        else stream = await this.visionLlmChain.stream({
-            input,
-            dateTimeString: `${date.toLocaleDateString(
-                "en-US"
-            )} ${date.toLocaleTimeString("en-US")}`,
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            relevantDocs: memories.relevantDocs,
-            conversationSummary: memories.conversationSummary || "N/A",
-            moduleInfo: config.modules
-                ? await this.modules.callModule(input, memories.relevantDocs)
-                : undefined,
-            caption: await this.vision.caption(imgPath)
-        });
+            caption: imgPath && config.vision ? await this.vision.caption(imgPath) : undefined
+        }));
         // chunks
         for await (let chunk of stream) {
-            // emit ana event
+            // emit an event
             this.emitter.emit("chunk", chunk.content);
             // add to the response
             response += chunk.content;
