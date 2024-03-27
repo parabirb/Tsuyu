@@ -108,7 +108,7 @@ console.log(await controller.generate("Hello, world!"));
 
 Additionally, the controller comes with two useful properties:
 * `emitter: EventEmitter` - An event emitter for streaming. Emits `chunk` events with data whenever a chunk is received from the LLM.
-* `model: ChatLlamaCpp` - An interface for directly working with the LLM, in case you want to skip Tsuyu's prompting and pipelines. **Only powerusers should use this interface.** For more information on the ChatLlamaCpp interface, see the [LangChain.js](https://api.js.langchain.com/classes/langchain_community_chat_models_llama_cpp.ChatLlamaCpp.html) documentation.
+* `model: Wrapper` - An interface for directly working with the LLM, in case you want to skip Tsuyu's prompting and pipelines. **Only powerusers should use this interface.** The model class implements the `invoke` and `stream` functions from LangChain.js's [ChatLlamaCpp](https://api.js.langchain.com/classes/langchain_community_chat_models_llama_cpp.ChatLlamaCpp.html).
 
 ## Tsuyu Web API Endpoints
 Tsuyu's web interface currently provides five API endpoints.

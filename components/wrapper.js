@@ -16,10 +16,11 @@ export default class Wrapper {
             model: this.model,
             ...config.contextConfig,
         });
-        this.invocationContext = new LlamaContext({
+        if (config.modules) this.invocationContext = new LlamaContext({
             model: this.model,
             ...config.contextConfig,
         });
+        else this.invocationContext = this.context;
         this.params = config.params;
     }
     // stream
