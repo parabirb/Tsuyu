@@ -16,16 +16,18 @@ export default class Wrapper {
             model: this.model,
             ...config.contextConfig,
         });
+        this.invocationContext = new LlamaContext({
+            model: this.model,
+            ...config.contextConfig,
+        });
         this.params = config.params;
     }
     // stream
     async *stream(prompt) {
-        // clone params
-        let params = structuredClone(this.params);
         // evaluate
         let stream = await this.context.evaluate(
             this.context.encode(prompt),
-            params
+            this.params
         );
         // for each token
         for await (let token of stream) {
@@ -36,13 +38,17 @@ export default class Wrapper {
     }
     // invoke
     async invoke(prompt) {
+        console.log(prompt);
         // empty response string
         let response = "";
         // create stream
-        let stream = await this.stream(prompt);
+        let stream = await this.context.evaluate(
+            this.context.encode(prompt),
+            this.params
+        );
         // stream
-        for await (let chunk of stream) {
-            response += chunk.content;
+        for await (let token of stream) {
+            response += this.invocationContext.decode([token]);
         }
         // return response
         return response;
