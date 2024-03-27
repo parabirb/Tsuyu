@@ -136,9 +136,9 @@ client.on("messageCreate", async (msg) => {
         controller.emitter.on("chunk", fnc);
         let rsp = attachment
             ? msg.attachments[0].contentType.startsWith("image")
-                ? await controller.vision(message.content, attachment)
+                ? await controller.vision(msg.content, attachment)
                 : await controller.audio(attachment)
-            : await controller.text(message.content);
+            : await controller.text(msg.content);
         console.log(rsp);
         // destroy the interval
         clearInterval(interval);
