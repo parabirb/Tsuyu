@@ -11,7 +11,8 @@
         "useMmap": true
     },
     "contextConfig": {
-        "batchSize": 2048
+        "batchSize": 2048,
+        "contextSize": 8192
     },
     "params": {
         "topK": 30,
