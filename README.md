@@ -59,13 +59,16 @@ You should save a config to `config.json`. An example is provided to you in `con
 
 * `port`: A number with the port to run the web API on. You can omit this if you aren't running the web interface.
 * `forwarding`: A boolean that determines whether Tsuyu's web interface will run a reverse proxy (similar to ngrok) or not. If you aren't using the web interface, it's safe to omit this.
+* `token`: The token for Tsuyu's Discord bot. You can omit this if you aren't using the Discord integration.
+* `channel`: The channel where you'll be running Tsuyu's Discord bot. You can also omit this if you aren't using the Discord integration.
 * `memory`: Determines whether long-term memory is enabled or not. Set this to `true` if you wish to enable memory, and `false` if you do not. Enabling memory may cause some LLM-related bugs.
-* `modules`: Determines whether modules are enabled. Set this to `true` to enable modules, and `false` to leave them disabled. **Please note that enabling modules will increase VRAM usage, as two separate LLaMA contexts have to be created.**
+* `modules`: Determines whether modules are enabled. Set this to `true` to enable modules, and `false` to leave them disabled. **Please note that enabling modules will increase VRAM usage, as two separate LLaMA contexts have to be created. Additionally, LLaMA will be called twice per generation.**
 * `memoryDocs` - Determines how many memories the memory component will feed to the LLM on each generation. You can omit this if you have long-term memory disabled.
 * `useSummarizer` and `historyPieces` - `useSummarizer` determines the type of short-term memory (chat history) Tsuyu will use. If set to `true`, Tsuyu will call LLaMA to summarize the chatlogs once they get longer than `historyPieces` tokens. If set to `false`, Tsuyu will use a simple window-based chat history, keeping the last `historyPieces` input/output pairs in short-term memory. **These options do NOT impact long-term memory.**
 * `llamaConfig` - This is the config passed to llama.cpp when Tsuyu creates a `LlamaModel`. See [the node-llama-cpp docs](https://withcatai.github.io/node-llama-cpp/api/type-aliases/LlamaModelOptions) for more info.
 * `contextConfig` - This is passed to node-llama-cpp when Tsuyu creates a `LlamaContext`. See [the node-llama-cpp docs](https://withcatai.github.io/node-llama-cpp/api/type-aliases/LlamaContextOptions) for more info.
 * `params` - These are the parameters passed to node-llama-cpp when generating a response. As always, see [the node-llama-cpp docs](https://withcatai.github.io/node-llama-cpp/api/classes/LlamaContext#evaluate) for more info.
+* `stop` - Tsuyu will cut off output if this token appears. You can omit this if you don't want stop tokens.
 * `llm` - The filename of the LLM to use. Note that your LLM should be in GGUF format, should be a chat finetune, and should be in the `models` directory.
 * `hfModel` - This should be the name of the HuggingFace repository containing your model (or the closest thing to it). This is used to automatically detect the correct prompt format for the model you're using, so it's essential that you pick the right one.
 * `stt` - The HuggingFace repository to retrieve the STT model from. We recommend that you leave this as `Xenova/whisper-small`. However, if accuracy doesn't matter, you can set this to `Xenova/whisper-tiny` or `Xenova/whisper-tiny.en`. **Omitting this will disable speech-to-text.**
@@ -106,7 +109,7 @@ console.log(await controller.generate("Hello, world!"));
 
 Additionally, the controller comes with two useful properties:
 * `emitter: EventEmitter` - An event emitter for streaming. Emits `chunk` events with data whenever a chunk is received from the LLM.
-* `model: ChatLlamaCpp` - An interface for directly working with the LLM, in case you want to skip Tsuyu's prompting and pipelines. **Only powerusers should use this interface.** For more information on the ChatLlamaCpp interface, see the [LangChain.js](https://api.js.langchain.com/classes/langchain_community_chat_models_llama_cpp.ChatLlamaCpp.html) documentation.
+* `model: Wrapper` - An interface for directly working with the LLM, in case you want to skip Tsuyu's prompting and pipelines. **Only powerusers should use this interface.** The model class implements the `invoke` and `stream` functions from LangChain.js's [ChatLlamaCpp](https://api.js.langchain.com/classes/langchain_community_chat_models_llama_cpp.ChatLlamaCpp.html).
 
 ## Tsuyu Web API Endpoints
 Tsuyu's web interface currently provides five API endpoints.
@@ -164,7 +167,7 @@ Server/client interface       |  🟢
 Component                     | Status 
 ----------------------------- | -----
 Client UI                     |  🟢
-Discord interface             |  🟡
+Discord interface             |  🟢
 Documentation                 |  🟢
 
 ### Additional features
