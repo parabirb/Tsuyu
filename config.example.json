@@ -19,7 +19,6 @@
         "topP": 0.85,
         "temperature": 0.5
     },
-    "stop": "<|im_end|>",
     "llm": "qwen1_5-0_5b-chat-q4_0.gguf",
     "hfModel": "Qwen/Qwen1.5-0.5B-Chat",
     "stt": "Xenova/whisper-small",

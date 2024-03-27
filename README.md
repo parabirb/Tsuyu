@@ -68,7 +68,6 @@ You should save a config to `config.json`. An example is provided to you in `con
 * `llamaConfig` - This is the config passed to llama.cpp when Tsuyu creates a `LlamaModel`. See [the node-llama-cpp docs](https://withcatai.github.io/node-llama-cpp/api/type-aliases/LlamaModelOptions) for more info.
 * `contextConfig` - This is passed to node-llama-cpp when Tsuyu creates a `LlamaContext`. See [the node-llama-cpp docs](https://withcatai.github.io/node-llama-cpp/api/type-aliases/LlamaContextOptions) for more info.
 * `params` - These are the parameters passed to node-llama-cpp when generating a response. As always, see [the node-llama-cpp docs](https://withcatai.github.io/node-llama-cpp/api/classes/LlamaContext#evaluate) for more info.
-* `stop` - Tsuyu will cut off output if this token appears. You can omit this if you don't want stop tokens.
 * `llm` - The filename of the LLM to use. Note that your LLM should be in GGUF format, should be a chat finetune, and should be in the `models` directory.
 * `hfModel` - This should be the name of the HuggingFace repository containing your model (or the closest thing to it). This is used to automatically detect the correct prompt format for the model you're using, so it's essential that you pick the right one.
 * `stt` - The HuggingFace repository to retrieve the STT model from. We recommend that you leave this as `Xenova/whisper-small`. However, if accuracy doesn't matter, you can set this to `Xenova/whisper-tiny` or `Xenova/whisper-tiny.en`. **Omitting this will disable speech-to-text.**
