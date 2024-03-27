@@ -54,7 +54,7 @@ ${moduleInfo}
 }${
     caption
         ? `Note that the user has attached an image to their latest message.
-The image caption is as follows: {caption}
+The image caption is as follows: ${caption}
 
 `
         : ""
