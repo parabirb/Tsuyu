@@ -32,8 +32,10 @@ export default class Wrapper {
         );
         // for each token
         for await (let token of stream) {
-            yield {
-                content: this.context.decode([token]),
+            token = this.context.decode([token])
+            if (token === config.stop) break;
+            else yield {
+                content: token,
             };
         }
     }
@@ -48,7 +50,9 @@ export default class Wrapper {
         );
         // stream
         for await (let token of stream) {
-            response += this.invocationContext.decode([token]);
+            token = this.invocationContext.decode([token])
+            if (token !== config.stop) response += this.invocationContext.decode([token]);
+            else break;
         }
         // return response
         return response;
