@@ -76,7 +76,7 @@ Do not output ANYTHING other than either the JSON or the word "null".`));
         // return if there is none
         if (!module) return "N/A";
         // return if args not met
-        if (!checkIfAllArgs(module, response.args));
+        if (!checkIfAllArgs(module, response.args)) return "N/A";
         // try the module
         try {
             return await module.function(response.args);
