@@ -26,7 +26,7 @@ export default class LLM {
         // if vision is enabled, init vision
         if (config.vision) {
             this.vision = new Vision();
-            this.vision.init();
+            await this.vision.init();
         }
         // init the memory component
         this.memoryComponent = new Memory(this.model);
