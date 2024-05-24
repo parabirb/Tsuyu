@@ -74,7 +74,7 @@ You should save a config to `config.json`. An example is provided to you in `con
 * `tts` - The HuggingFace repository to retrieve the TTS model from. We recommend using either `Xenova/speecht5_tts` or `Xenova/mms-tts-eng`. **Omitting this will disable text-to-speech.**
 * `vision` - The HuggingFace repository to retrieve the vision model from. You should probably leave this as `Xenova/vit-gpt2-image-captioning` if you want vision to work well. **Omitting this will disable vision.**
 * `embeddings` - The HuggingFace repository to fetch the embedding model from. Unless you know what you're doing, we recommend leaving this as `Xenova/all-MiniLM-L6-v2`. You can omit this if you have long-term memory disabled, but we recommend not doing so.
-* `ttsEmbeddings` - The URL to retrieve the TTS embedding model from. If you want to use TTS, leave this as `https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin`. You can omit this if you don't wannt to use TTS.
+* `ttsEmbeddings` - The URL to retrieve the TTS embedding model from. If you want to use TTS, leave this as `https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin`. You can omit this if you don't want to use TTS.
 * `prompt` - The prompt fed to the LLM. This should contain everything the LLM needs to know about the intended personality and output. Think of it like prompting gpt-3.5-turbo or similar.
 
 ## Tsuyu Controller
