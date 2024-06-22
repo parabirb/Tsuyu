@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import Embeddings from "./embeddings.js";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 import { CloseVectorNode } from "@langchain/community/vectorstores/closevector/node";
 import {
     CombinedMemory,

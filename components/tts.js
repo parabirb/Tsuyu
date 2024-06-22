@@ -4,7 +4,7 @@ import path from "path";
 import { cwd } from "process";
 import wavefile from "wavefile";
 import { pipeline } from "@xenova/transformers";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 // class
 export default class TTS {

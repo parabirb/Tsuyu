@@ -2,7 +2,7 @@
 import path from "path";
 import { cwd } from "process";
 import { LlamaContext, LlamaModel } from "node-llama-cpp";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 // class
 export default class Wrapper {

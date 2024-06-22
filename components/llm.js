@@ -5,7 +5,7 @@ import EventEmitter from "events";
 import Modules from "./modules.js";
 import Wrapper from "./wrapper.js";
 import Formatter from "./formatter.js";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 // export class
 export default class LLM {

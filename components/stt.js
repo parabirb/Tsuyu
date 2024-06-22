@@ -5,7 +5,7 @@ import { cwd } from "process";
 import wavefile from "wavefile";
 import Ffmpeg from "fluent-ffmpeg";
 import { pipeline } from "@xenova/transformers";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 // ffmpeg run function
 function runFfmpeg(webmPath) {

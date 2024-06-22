@@ -8,7 +8,7 @@ import bb from "express-busboy";
 import bodyParser from "body-parser";
 import localtunnel from "localtunnel";
 import Controller from "./controller.js";
-import config from "./config.json" assert { type: "json" };
+import config from "./config.json" with { type: "json" };
 
 // create the controller
 let controller = new Controller();

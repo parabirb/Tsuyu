@@ -1,5 +1,5 @@
 // deps
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 import { LlamaCpp } from "@langchain/community/llms/llama_cpp";
 
 // function to parse json

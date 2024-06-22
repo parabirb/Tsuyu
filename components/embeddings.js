@@ -1,6 +1,6 @@
 // deps
 import { pipeline } from "@xenova/transformers";
-import config from "../config.json" assert { type: "json" };
+import config from "../config.json" with { type: "json" };
 
 // class
 export default class Embeddings {

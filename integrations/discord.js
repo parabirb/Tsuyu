@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs/promises";
 import { Client } from "discord.js";
 import Controller from "../controller.js";
-import config from "../config.json" assert { "type": "json" };
+import config from "../config.json" with { "type": "json" };
 
 // variables
 let generating = false;
